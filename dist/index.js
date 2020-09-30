@@ -33,7 +33,10 @@ const github = __importStar(__webpack_require__(438));
 exports.getPayload = async () => {
     // const token = core.getInput('myToken');
     // const octokit = github.getOctokit(token);
-    console.log({ payload: github.context.payload });
+    const { payload } = github.context;
+    console.log(payload);
+    const commitIds = payload.commits.map((item) => item.id);
+    console.log(commitIds);
     const { GITHUB_SHA } = process.env;
     return GITHUB_SHA;
 };
