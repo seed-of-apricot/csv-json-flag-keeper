@@ -1,5 +1,5 @@
-import * as core from '@actions/core';
-import * as github from '@actions/github';
+// import * as core from '@actions/core';
+// import * as github from '@actions/github';
 
 export const getPayload = async (): Promise<string | undefined> => {
   // const token = core.getInput('myToken');
