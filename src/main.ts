@@ -3,7 +3,8 @@ import { getPayload } from './getPayload';
 
 const main = async (): Promise<void> => {
   try {
-    core.debug('Initializing.');
+    // eslint-disable-next-line no-console
+    console.log('Initializing.');
 
     const str = await getPayload();
 

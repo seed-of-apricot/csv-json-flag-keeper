@@ -49,7 +49,8 @@ const core = __importStar(__webpack_require__(186));
 const getPayload_1 = __webpack_require__(22);
 const main = async () => {
     try {
-        core.debug('Initializing.');
+        // eslint-disable-next-line no-console
+        console.log('Initializing.');
         const str = await getPayload_1.getPayload();
         if (str) {
             core.debug(str);
