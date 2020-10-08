@@ -31,7 +31,7 @@ exports.getCommits = void 0;
 const core = __importStar(__webpack_require__(2186));
 const github = __importStar(__webpack_require__(5438));
 exports.getCommits = async () => {
-    const token = core.getInput('token');
+    const token = core.getInput('GITHUB_TOKEN');
     const octokit = github.getOctokit(token);
     const { repo, payload } = github.context;
     const commitIds = payload.commits.map((item) => item.id);
@@ -73,7 +73,7 @@ exports.getFiles = void 0;
 const core = __importStar(__webpack_require__(2186));
 const github = __importStar(__webpack_require__(5438));
 exports.getFiles = async (commits) => {
-    const token = core.getInput('myToken');
+    const token = core.getInput('GITHUB_TOKEN');
     const octokit = github.getOctokit(token);
     const files = commits.flatMap(item => item.data.files.reduce((prev, file) => {
         if (file.filename.split('.').pop() === 'csv') {
@@ -125,7 +125,7 @@ exports.getSummary = void 0;
 const core = __importStar(__webpack_require__(2186));
 const github = __importStar(__webpack_require__(5438));
 exports.getSummary = async () => {
-    const token = core.getInput('myToken');
+    const token = core.getInput('GITHUB_TOKEN');
     const octokit = github.getOctokit(token);
     const path = core.getInput('summaryPath');
     return octokit.repos.getContent({
@@ -172,15 +172,21 @@ const processFiles_1 = __webpack_require__(8930);
 const writeNewSummary_1 = __webpack_require__(5584);
 const main = async () => {
     try {
-        console.log('Initializing.');
+        console.log('initialized');
         const commits = await getCommits_1.getCommits();
+        console.log('commit has been retrieved');
         if (!commits) {
+            console.log('no commits');
             return;
         }
         const summary = getSummary_1.getSummary();
+        console.log('summary has been retrieved');
         const files = getFiles_1.getFiles(commits);
+        console.log('files have been retrieved');
         const newSummary = await processFiles_1.processFiles((await summary).data, (await files).map(item => item.data));
+        console.log('new summary has been compiled');
         writeNewSummary_1.writeNewSummary(newSummary);
+        console.log('new summary has been written');
     }
     catch (error) {
         core.setFailed(error.message);
