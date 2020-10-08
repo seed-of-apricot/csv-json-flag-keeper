@@ -7,21 +7,28 @@ import { writeNewSummary } from './writeNewSummary';
 
 const main = async (): Promise<void> => {
   try {
-    console.log('Initializing.');
+    console.log('initialized');
 
     const commits = await getCommits();
 
+    console.log('commit has been retrieved');
+
     if (!commits) {
+      console.log('no commits');
       return;
     }
 
     const summary = getSummary();
+    console.log('summary has been retrieved');
     const files = getFiles(commits);
+    console.log('files have been retrieved');
     const newSummary = await processFiles(
       ((await summary).data as unknown) as string,
       (await files).map(item => (item.data as unknown) as string),
     );
+    console.log('new summary has been compiled');
     writeNewSummary(newSummary);
+    console.log('new summary has been written');
   } catch (error) {
     core.setFailed(error.message);
   }
