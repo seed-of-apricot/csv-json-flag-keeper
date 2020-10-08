@@ -2,7 +2,7 @@ name: 'csv-flag-keeper'
 description: 'Keep your summary sheet'
 author: 'seed-of-apricot <seed.of.apricot@dev.chronolapselibrary.net>'
 inputs:
-  token:
+  GITHUB_TOKEN:
     required: true
     description: 'github token'
   summaryPath:
