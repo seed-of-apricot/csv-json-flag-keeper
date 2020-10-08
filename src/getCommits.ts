@@ -5,7 +5,7 @@ import { OctokitResponse, ReposGetCommitResponseData } from '@octokit/types';
 export const getCommits = async (): Promise<
   OctokitResponse<ReposGetCommitResponseData>[]
 > => {
-  const token = core.getInput('token');
+  const token = core.getInput('GITHUB_TOKEN');
   const octokit = github.getOctokit(token);
 
   const { repo, payload } = github.context;

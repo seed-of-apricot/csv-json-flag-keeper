@@ -9,7 +9,7 @@ import {
 export const getFiles = async (
   commits: OctokitResponse<ReposGetCommitResponseData>[],
 ): Promise<OctokitResponse<ReposGetContentResponseData>[]> => {
-  const token = core.getInput('myToken');
+  const token = core.getInput('GITHUB_TOKEN');
   const octokit = github.getOctokit(token);
   const files = commits.flatMap(item =>
     item.data.files.reduce((prev, file) => {

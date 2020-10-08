@@ -10,7 +10,7 @@ inputs:
     description: 'the path to the summary file'
   id:
     required: false
-    description: 'column-name of the id'
+    description: 'column name for the id'
     default: 'id'
 runs:
   using: 'node12'
