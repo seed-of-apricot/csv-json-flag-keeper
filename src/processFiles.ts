@@ -18,7 +18,7 @@ export const processFiles = async (
       const id = row[idColumn];
       keys.map(key => {
         const index = summaryObject.findIndex(item => item.ResponseId === id);
-        if (index) {
+        if (index > 0) {
           console.log(index, summaryObject[index]);
           summaryObject[index][key] = row[key];
         }
