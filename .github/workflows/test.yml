@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - update-summary
-    paths:
-      - 'example/flags/**/*.csv'
 
 jobs:
   test:
