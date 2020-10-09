@@ -10,22 +10,24 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: update-summary
+        uses: ./
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           summaryPath: 'example/example.csv'
-      - uses: EndBug/add-and-commit@v4
+      - name: add-and-commit
+        uses: EndBug/add-and-commit@v4
         with:
           message: summary has been updated
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
-          git pull
       - uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: peter-evans/create-pull-request@master
+      - name: push
+        uses: peter-evans/create-pull-request@master
         with:
           commit-message: update summary
           title: Update Summary
