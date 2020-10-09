@@ -189,6 +189,7 @@ const main = async () => {
         console.log('new summary has been written');
     }
     catch (error) {
+        console.log(error);
         core.setFailed(error.message);
     }
 };
