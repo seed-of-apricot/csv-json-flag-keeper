@@ -23,10 +23,11 @@ jobs:
           message: summary has been updated
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: ad-m/github-push-action@master
+      - name: push
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: push
+      - name: pull-request
         uses: peter-evans/create-pull-request@master
         with:
           commit-message: update summary
