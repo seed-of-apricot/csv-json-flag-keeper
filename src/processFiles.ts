@@ -17,9 +17,9 @@ export const processFiles = async (
       const keys = Object.keys(row).slice(1);
       const id = row[idColumn];
       keys.map(key => {
-        const target = summaryObject.find(item => item.ResponseId === id);
-        if (target) {
-          target[key] = row[key];
+        const index = summaryObject.findIndex(item => item.ResponseId === id);
+        if (index) {
+          summaryObject[index][key] = row[key];
         }
       });
     });
