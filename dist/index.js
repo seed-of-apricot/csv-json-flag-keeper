@@ -290,6 +290,7 @@ const fs_1 = __webpack_require__(5747);
 exports.writeNewSummary = async (summary) => {
     const str = sync_1.default(summary, { header: true });
     const path = core.getInput('summaryPath') || './summary.csv';
+    console.log(str);
     fs_1.writeFile(path, str, () => { });
     return 1;
 };
