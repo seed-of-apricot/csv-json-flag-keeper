@@ -25,5 +25,6 @@ export const processFiles = async (
       });
     });
   });
+  console.log(summaryObject);
   return summaryObject;
 };

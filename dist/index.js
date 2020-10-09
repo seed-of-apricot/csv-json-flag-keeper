@@ -250,6 +250,7 @@ exports.processFiles = async (summary, files) => {
             });
         });
     });
+    console.log(summaryObject);
     return summaryObject;
 };
 
