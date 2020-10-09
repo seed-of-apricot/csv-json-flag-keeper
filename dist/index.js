@@ -243,8 +243,7 @@ exports.processFiles = async (summary, files) => {
             const id = row[idColumn];
             keys.map(key => {
                 const index = summaryObject.findIndex(item => item[idColumn] === id);
-                if (index > 0) {
-                    console.log(index, summaryObject[index]);
+                if (index > -1) {
                     summaryObject[index][key] = row[key];
                 }
             });
@@ -290,8 +289,12 @@ const sync_1 = __importDefault(__webpack_require__(3190));
 const fs_1 = __webpack_require__(5747);
 exports.writeNewSummary = async (summary) => {
     console.log(summary);
-    const str = sync_1.default(summary, { header: true });
+    const columns = summary
+        .flatMap(item => Object.keys(item))
+        .filter((item, index, array) => array.indexOf(item) === index);
+    const str = sync_1.default(summary, { header: true, columns });
     console.log(str);
+    console.log(columns);
     const path = core.getInput('summaryPath') || './summary.csv';
     fs_1.writeFile(path, str, () => { });
     return 1;
