@@ -242,7 +242,7 @@ exports.processFiles = async (summary, files) => {
             const keys = Object.keys(row).slice(1);
             const id = row[idColumn];
             keys.map(key => {
-                const index = summaryObject.findIndex(item => item.ResponseId === id);
+                const index = summaryObject.findIndex(item => item[key] === id);
                 if (index > 0) {
                     console.log(index, summaryObject[index]);
                     summaryObject[index][key] = row[key];
