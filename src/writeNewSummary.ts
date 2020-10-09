@@ -7,6 +7,6 @@ export const writeNewSummary = async (summary: Object[]) => {
   const str = stringify(summary, { header: true });
   const path = core.getInput('summaryPath') || './summary.csv';
 
-  writeFile(path, str, () => console.log('New file has been written.'));
+  writeFile(path, str, () => {});
   return 1;
 };
