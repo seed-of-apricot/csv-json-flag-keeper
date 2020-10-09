@@ -244,6 +244,7 @@ exports.processFiles = async (summary, files) => {
             keys.map(key => {
                 const index = summaryObject.findIndex(item => item.ResponseId === id);
                 if (index) {
+                    console.log(index, summaryObject[index]);
                     summaryObject[index][key] = row[key];
                 }
             });
