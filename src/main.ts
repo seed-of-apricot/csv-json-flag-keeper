@@ -30,6 +30,7 @@ const main = async (): Promise<void> => {
     writeNewSummary(newSummary);
     console.log('new summary has been written');
   } catch (error) {
+    console.log(error);
     core.setFailed(error.message);
   }
 };
