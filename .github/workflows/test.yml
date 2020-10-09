@@ -19,11 +19,9 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           summaryPath: 'example/example.csv'
-      - uses: EndBug/add-and-commit@v4
+      - uses: peter-evans/create-pull-request@master
         with:
-          message: summary has been updated
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: update summary
+          title: Update Summary
+          body: summary updated
+          branch: update-summary
