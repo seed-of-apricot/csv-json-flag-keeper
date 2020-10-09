@@ -22,12 +22,12 @@ const main = async (): Promise<void> => {
     console.log('summary has been retrieved');
     const files = getFiles(commits);
     console.log('files have been retrieved');
-    const newSummary = await processFiles(
+    const newSummary = processFiles(
       ((await summary).data as unknown) as string,
       (await files).map(item => (item.data as unknown) as string),
     );
     console.log('new summary has been compiled');
-    writeNewSummary(newSummary);
+    writeNewSummary(await newSummary);
     console.log('new summary has been written');
   } catch (error) {
     console.log(error);

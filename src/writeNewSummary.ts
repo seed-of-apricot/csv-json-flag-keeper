@@ -4,10 +4,10 @@ import stringify from 'csv-stringify/lib/sync';
 import { writeFile } from 'fs';
 
 export const writeNewSummary = async (summary: Object[]) => {
+  console.log(summary);
   const str = stringify(summary, { header: true });
-  const path = core.getInput('summaryPath') || './summary.csv';
-
   console.log(str);
+  const path = core.getInput('summaryPath') || './summary.csv';
 
   writeFile(path, str, () => {});
   return 1;

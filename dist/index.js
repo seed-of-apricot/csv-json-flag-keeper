@@ -183,9 +183,9 @@ const main = async () => {
         console.log('summary has been retrieved');
         const files = getFiles_1.getFiles(commits);
         console.log('files have been retrieved');
-        const newSummary = await processFiles_1.processFiles((await summary).data, (await files).map(item => item.data));
+        const newSummary = processFiles_1.processFiles((await summary).data, (await files).map(item => item.data));
         console.log('new summary has been compiled');
-        writeNewSummary_1.writeNewSummary(newSummary);
+        writeNewSummary_1.writeNewSummary(await newSummary);
         console.log('new summary has been written');
     }
     catch (error) {
@@ -250,7 +250,6 @@ exports.processFiles = async (summary, files) => {
             });
         });
     });
-    console.log(summaryObject);
     return summaryObject;
 };
 
@@ -290,9 +289,10 @@ const core = __importStar(__webpack_require__(2186));
 const sync_1 = __importDefault(__webpack_require__(3190));
 const fs_1 = __webpack_require__(5747);
 exports.writeNewSummary = async (summary) => {
+    console.log(summary);
     const str = sync_1.default(summary, { header: true });
-    const path = core.getInput('summaryPath') || './summary.csv';
     console.log(str);
+    const path = core.getInput('summaryPath') || './summary.csv';
     fs_1.writeFile(path, str, () => { });
     return 1;
 };
