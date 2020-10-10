@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+        with:
+          ref: update-summary
       - name: update-summary
         uses: ./
         with:
@@ -22,5 +24,4 @@ jobs:
           commit-message: update summary
           title: Update Summary
           body: summary updated
-          branch: update-summary
-          base: master
+          branch: master
