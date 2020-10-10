@@ -22,5 +22,3 @@ jobs:
           commit-message: update summary
           title: Update Summary
           body: summary updated
-          branch: main
-          delete-branch: true
