@@ -185,6 +185,7 @@ const main = async () => {
             console.log('no commits');
             return;
         }
+        console.log(commits);
         const summary = getSummary_1.getSummary();
         console.log('summary has been retrieved');
         const files = getFiles_1.getFiles(commits);
