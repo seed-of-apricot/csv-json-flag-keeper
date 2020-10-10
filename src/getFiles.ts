@@ -16,6 +16,8 @@ export const getFiles = async (
   const octokit = github.getOctokit(token);
   const files = commits.flatMap(item =>
     item.data.files.reduce((prev, file) => {
+      console.log(file.filename);
+      console.log(file.filename.match(path));
       if (file.filename.match(path) !== null) {
         return [
           ...prev,
