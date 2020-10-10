@@ -25,3 +25,4 @@ jobs:
           title: Update Summary
           body: summary updated
           branch: master
+          base: main
