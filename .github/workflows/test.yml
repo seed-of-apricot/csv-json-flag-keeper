@@ -17,11 +17,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           summaryPath: 'example/example.csv'
-      - uses: EndBug/add-and-commit@v4
-        with:
-          message: summary has been updated
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
