@@ -78,12 +78,12 @@ jobs:
 
 The parameters that this action refers to are:
 
-| parameter    | required | default                       |
-| ------------ | -------- | ----------------------------- |
-| summaryPath  | Yes      |                               |
-| flagPath     | Yes      |                               |
-| GITHUB_TOKEN |          | `${{ secrets.GITHUB_TOKEN }}` |
-| id           |          | `'id'`                        |
+| parameter    | required | default | What is this                           |
+| ------------ | -------- | ------- | -------------------------------------- |
+| GITHUB_TOKEN | Yes      |         | GitHub token                           |
+| summaryPath  | Yes      |         | Path to the summary file               |
+| flagPath     | Yes      |         | Path to the flag files to be retrieved |
+| id           |          | `'id'`  | Column name of id                      |
 
 ## License
 

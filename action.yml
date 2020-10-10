@@ -2,16 +2,15 @@ name: 'csv-flag-keeper'
 description: 'Keep your summary sheet'
 author: 'seed-of-apricot <seed.of.apricot@dev.chronolapselibrary.net>'
 inputs:
+  GITHUB_TOKEN:
+    required: true
+    description: 'github token'
   summaryPath:
     required: true
     description: 'path to the summary file'
   flagPath:
     required: true
     description: 'path to the flag files'
-  GITHUB_TOKEN:
-    required: false
-    description: 'github token'
-    default: '${{ secrets.GITHUB_TOKEN }}'
   id:
     required: false
     description: 'column name for the id'
