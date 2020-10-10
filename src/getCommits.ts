@@ -10,6 +10,8 @@ export const getCommits = async (): Promise<
 
   const { repo, payload } = github.context;
 
+  console.log(payload);
+
   const commitIds = payload.commits.map((item: { id: string }) => item.id);
 
   return Promise.all(

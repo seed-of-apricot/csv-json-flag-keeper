@@ -34,6 +34,7 @@ exports.getCommits = async () => {
     const token = core.getInput('GITHUB_TOKEN');
     const octokit = github.getOctokit(token);
     const { repo, payload } = github.context;
+    console.log(payload);
     const commitIds = payload.commits.map((item) => item.id);
     return Promise.all(commitIds.map(async (item) => octokit.repos.getCommit({
         ...repo,
