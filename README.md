@@ -84,3 +84,7 @@ The parameters that this action refers to are:
 | flagPath     | Yes      |                               |
 | GITHUB_TOKEN |          | `${{ secrets.GITHUB_TOKEN }}` |
 | id           |          | `'id'`                        |
+
+## License
+
+MIT License. This repository uses the [typescript-action template](https://github.com/actions/typescript-action) so the original MIT license also applies.
