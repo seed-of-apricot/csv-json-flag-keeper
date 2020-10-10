@@ -7,7 +7,10 @@ inputs:
     description: 'github token'
   summaryPath:
     required: true
-    description: 'the path to the summary file'
+    description: 'path to the summary file'
+  flagPath:
+    required: true
+    description: 'path to the flag files'
   id:
     required: false
     description: 'column name for the id'

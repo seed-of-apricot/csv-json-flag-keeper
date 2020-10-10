@@ -16,7 +16,8 @@ jobs:
         uses: ./
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          summaryPath: 'example/example.csv'
+          summaryPath: example/example.csv
+          flagPath: example/flags/*.csv
       - name: add-and-commit
         uses: EndBug/add-and-commit@v4
         with:
@@ -30,3 +31,4 @@ jobs:
           commit-message: update summary
           title: Update Summary
           body: summary updated
+          base: main

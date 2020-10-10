@@ -5,15 +5,18 @@ import {
   ReposGetCommitResponseData,
   ReposGetContentResponseData,
 } from '@octokit/types';
+import globToRegex from 'glob-to-regExp';
 
 export const getFiles = async (
   commits: OctokitResponse<ReposGetCommitResponseData>[],
 ): Promise<OctokitResponse<ReposGetContentResponseData>[]> => {
   const token = core.getInput('GITHUB_TOKEN');
+  const path = globToRegex(core.getInput('flagPath'), { globstar: true });
+  console.log(path);
   const octokit = github.getOctokit(token);
   const files = commits.flatMap(item =>
     item.data.files.reduce((prev, file) => {
-      if (file.filename.split('.').pop() === 'csv') {
+      if (file.filename.match(path) !== null) {
         return [
           ...prev,
           octokit.repos.getContent({
