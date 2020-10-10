@@ -26,6 +26,7 @@ export const getFiles = async (
             ...github.context.repo,
             headers: { accept: 'application/vnd.github.v3.raw' },
             path: file.filename,
+            ref: item.data.sha,
           }),
         ];
       } else {
