@@ -21,7 +21,7 @@ jobs:
         uses: EndBug/add-and-commit@v4
         with:
           message: summary has been updated
-          branch: update-summary
+          branch: 'update-summary'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: pull-request
@@ -30,4 +30,4 @@ jobs:
           commit-message: update summary
           title: Update Summary
           body: summary updated
-          branch: main
+          branch: 'main'
