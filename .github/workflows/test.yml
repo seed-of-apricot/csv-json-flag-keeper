@@ -22,4 +22,4 @@ jobs:
           commit-message: update summary
           title: Update Summary
           body: summary updated
-          base: main
+          branch: main
