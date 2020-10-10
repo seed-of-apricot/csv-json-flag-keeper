@@ -1,4 +1,4 @@
-name: 'build-test'
+name: 'update-summary'
 on:
   push:
     branches:
