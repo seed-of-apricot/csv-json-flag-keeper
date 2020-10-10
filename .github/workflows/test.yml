@@ -1,4 +1,4 @@
-name: 'build-test'
+name: 'update-summary'
 on:
   push:
     branches:
@@ -24,5 +24,4 @@ jobs:
           commit-message: update summary
           title: Update Summary
           body: summary updated
-          branch: main
-          base: update-summary
+          base: main
