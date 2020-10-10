@@ -11,7 +11,7 @@ inputs:
   GITHUB_TOKEN:
     required: false
     description: 'github token'
-    default: ${{ secrets.GITHUB_TOKEN }}
+    default: '${{ secrets.GITHUB_TOKEN }}'
   id:
     required: false
     description: 'column name for the id'
