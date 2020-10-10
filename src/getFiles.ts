@@ -12,6 +12,7 @@ export const getFiles = async (
 ): Promise<OctokitResponse<ReposGetContentResponseData>[]> => {
   const token = core.getInput('GITHUB_TOKEN');
   const path = globToRegex(core.getInput('flagPath'), { globstar: true });
+  console.log(core.getInput('flagPath'));
   console.log(path);
   const octokit = github.getOctokit(token);
   const files = commits.flatMap(item =>
