@@ -18,6 +18,8 @@ const main = async (): Promise<void> => {
       return;
     }
 
+    console.log(commits);
+
     const summary = getSummary();
     console.log('summary has been retrieved');
     const files = getFiles(commits);
