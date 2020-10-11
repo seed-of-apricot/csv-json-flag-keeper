@@ -1,6 +1,6 @@
 name: 'update-summary'
 on:
-  pull-request:
+  pull_request:
     branches:
       - main
 
