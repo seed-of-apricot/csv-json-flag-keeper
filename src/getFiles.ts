@@ -13,6 +13,7 @@ export const getFiles = async (
   const token = core.getInput('GITHUB_TOKEN');
   const path = globToRegex(core.getInput('flagPath'), { globstar: true });
   const octokit = github.getOctokit(token);
+  console.log(commits);
   const files = commits.flatMap(item =>
     item.data.files.reduce((prev, file) => {
       console.log(file);

@@ -92,6 +92,7 @@ exports.getFiles = async (commits) => {
     const token = core.getInput('GITHUB_TOKEN');
     const path = glob_to_regExp_1.default(core.getInput('flagPath'), { globstar: true });
     const octokit = github.getOctokit(token);
+    console.log(commits);
     const files = commits.flatMap(item => item.data.files.reduce((prev, file) => {
         console.log(file);
         if (file.filename.match(path) !== null && file.status !== 'removed') {
