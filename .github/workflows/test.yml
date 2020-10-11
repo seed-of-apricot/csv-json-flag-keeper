@@ -1,8 +1,8 @@
 name: 'update-summary'
 on:
-  push:
+  pull_request:
     branches:
-      - update-summary
+      - main
 
 jobs:
   test:
@@ -16,10 +16,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           summaryPath: example/example.csv
           flagPath: example/flags/*.csv
-      - name: pull-request
-        uses: peter-evans/create-pull-request@master
+      - name: add-and-commit
+        uses: EndBug/add-and-commit@v4
         with:
-          commit-message: update summary
-          title: Update Summary
-          body: summary updated
-          base: main
+          message: README.md has been re-written
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
