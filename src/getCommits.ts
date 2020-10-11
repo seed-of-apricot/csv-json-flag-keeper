@@ -12,22 +12,25 @@ export const getCommits = async (): Promise<
 
   console.log(payload.pull_request!);
 
-  const commitIds = () => {
+  const commitIds = async (): Promise<string[]> => {
     switch (payload.action) {
       case 'push':
         return payload.commits.map((item: { id: string }) => item.id);
       case 'pull_request':
-        return payload.pull_request!.commits.map(
-          (item: { id: string }) => item.id,
-        );
-
+        return (
+          await octokit.pulls.listCommits({
+            ...repo,
+            pull_number: payload.pull_request!.number,
+          })
+        ).data.map(item => item.sha);
       default:
-        break;
+        return ['null'];
     }
   };
+  console.log(await commitIds());
 
   return Promise.all(
-    commitIds().map(
+    (await commitIds()).map(
       async (
         item: string,
       ): Promise<OctokitResponse<ReposGetCommitResponseData>> =>
