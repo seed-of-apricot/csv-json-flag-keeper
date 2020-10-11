@@ -80,13 +80,10 @@ const glob_to_regExp_1 = __importDefault(__webpack_require__(7515));
 exports.getFiles = async (commits) => {
     const token = core.getInput('GITHUB_TOKEN');
     const path = glob_to_regExp_1.default(core.getInput('flagPath'), { globstar: true });
-    console.log(core.getInput('flagPath'));
-    console.log(path);
     const octokit = github.getOctokit(token);
     const files = commits.flatMap(item => item.data.files.reduce((prev, file) => {
-        console.log(file.filename);
-        console.log(file.filename.match(path));
-        if (file.filename.match(path) !== null) {
+        console.log(file);
+        if (file.filename.match(path) !== null && file.status !== 'removed') {
             return [
                 ...prev,
                 octokit.repos.getContent({
