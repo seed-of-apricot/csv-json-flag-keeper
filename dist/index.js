@@ -36,16 +36,14 @@ exports.getCommits = async () => {
     const { repo, payload } = github.context;
     console.log(payload);
     const commitIds = async () => {
-        switch (payload.action) {
-            case 'push':
-                return payload.commits.map((item) => item.id);
-            case 'pull_request':
-                return (await octokit.pulls.listCommits({
-                    ...repo,
-                    pull_number: payload.pull_request.number,
-                })).data.map(item => item.sha);
-            default:
-                return ['null'];
+        if (payload.pull_request) {
+            return (await octokit.pulls.listCommits({
+                ...repo,
+                pull_number: payload.number,
+            })).data.map(item => item.sha);
+        }
+        else {
+            return payload.commits.map((item) => item.id);
         }
     };
     console.log(await commitIds());
