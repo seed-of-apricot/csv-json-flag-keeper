@@ -27,7 +27,7 @@ export const getCommits = async (): Promise<
   };
 
   return Promise.all(
-    commitIds.map(
+    commitIds().map(
       async (
         item: string,
       ): Promise<OctokitResponse<ReposGetCommitResponseData>> =>
