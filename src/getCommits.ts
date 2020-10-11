@@ -10,12 +10,24 @@ export const getCommits = async (): Promise<
 
   const { repo, payload } = github.context;
 
-  console.log(payload);
+  console.log(payload.pull_request!);
 
-  const commitIds = payload.commits.map((item: { id: string }) => item.id);
+  const commitIds = () => {
+    switch (payload.action) {
+      case 'push':
+        return payload.commits.map((item: { id: string }) => item.id);
+      case 'pull_request':
+        return payload.pull_request!.commits.map(
+          (item: { id: string }) => item.id,
+        );
+
+      default:
+        break;
+    }
+  };
 
   return Promise.all(
-    commitIds.map(
+    commitIds().map(
       async (
         item: string,
       ): Promise<OctokitResponse<ReposGetCommitResponseData>> =>
