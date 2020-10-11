@@ -10,7 +10,7 @@ export const getCommits = async (): Promise<
 
   const { repo, payload } = github.context;
 
-  console.log(payload.pull_request!);
+  console.log(payload);
 
   const commitIds = async (): Promise<string[]> => {
     switch (payload.action) {

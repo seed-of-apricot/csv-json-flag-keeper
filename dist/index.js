@@ -34,7 +34,7 @@ exports.getCommits = async () => {
     const token = core.getInput('GITHUB_TOKEN');
     const octokit = github.getOctokit(token);
     const { repo, payload } = github.context;
-    console.log(payload.pull_request);
+    console.log(payload);
     const commitIds = async () => {
         switch (payload.action) {
             case 'push':
