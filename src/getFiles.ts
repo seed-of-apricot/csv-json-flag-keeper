@@ -19,7 +19,7 @@ export const getFiles = async (
     item.data.files.reduce((prev, file) => {
       console.log(file.filename);
       console.log(file.filename.match(path));
-      if (file.filename.match(path) !== null) {
+      if (file.filename.match(path) !== null && file.status !== 'removed') {
         return [
           ...prev,
           octokit.repos.getContent({
