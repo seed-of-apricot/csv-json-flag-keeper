@@ -58,7 +58,7 @@ jobs:
         with:
           ref: update-summary
       - name: update-summary
-        uses: ./
+        uses: seed-of-apricot/csv-flag-keeper@0.1.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           summaryPath: example/example.csv
