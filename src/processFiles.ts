@@ -11,6 +11,7 @@ export const processFiles = async (
     columns: true,
   });
   files.map(file => {
+    console.log(file);
     const data = parse(file.data, {
       columns: true,
     });

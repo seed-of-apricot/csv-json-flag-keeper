@@ -259,6 +259,7 @@ exports.processFiles = async (summary, files) => {
         columns: true,
     });
     files.map(file => {
+        console.log(file);
         const data = sync_1.default(file.data, {
             columns: true,
         });
