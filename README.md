@@ -63,13 +63,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           summaryPath: example/example.csv
           flagPath: example/flags/*.csv
-      - name: pull-request
-        uses: peter-evans/create-pull-request@master
+      - name: add-and-commit
+        uses: EndBug/add-and-commit@v4
         with:
-          commit-message: update summary
-          title: Update Summary
-          body: summary updated
-          base: main
+          message: README.md has been re-written
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 1. Checkout
@@ -78,12 +77,13 @@ jobs:
 
 The parameters that this action refers to are:
 
-| parameter    | required | default | What is this                           |
-| ------------ | -------- | ------- | -------------------------------------- |
-| GITHUB_TOKEN | Yes      |         | GitHub token                           |
-| summaryPath  | Yes      |         | Path to the summary file               |
-| flagPath     | Yes      |         | Path to the flag files to be retrieved |
-| id           |          | `'id'`  | Column name of id                      |
+| parameter    | required | default  | What is this                                                                                                    |
+| ------------ | -------- | -------- | --------------------------------------------------------------------------------------------------------------- |
+| GITHUB_TOKEN | Yes      |          | GitHub token                                                                                                    |
+| summaryPath  | Yes      |          | Path to the summary file                                                                                        |
+| flagPath     | Yes      |          | Path to the flag files to be retrieved                                                                          |
+| id           |          | `id`     | Column name of id                                                                                               |
+| mode         |          | `single` | `single` uses the file name as the column name <br /> `multiple` uses filename + column name as the column name |
 
 ## License
 
