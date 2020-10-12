@@ -100,7 +100,6 @@ exports.getFiles = async (commits) => {
                 ...prev,
                 octokit.repos.getContent({
                     ...github.context.repo,
-                    headers: { accept: 'application/vnd.github.v3.raw' },
                     path: file.filename,
                     ref: item.data.sha,
                 }),
@@ -204,7 +203,10 @@ const main = async () => {
         console.log('summary has been retrieved');
         const files = getFiles_1.getFiles(commits);
         console.log('files have been retrieved');
-        const newSummary = processFiles_1.processFiles((await summary).data, (await files).map(item => item.data));
+        const newSummary = processFiles_1.processFiles((await summary).data, (await files).map(item => ({
+            data: Buffer.from(item.data.content, 'base64').toString(),
+            title: item.data.path.replace(/^.*\//g, '').split('.')[0],
+        })));
         console.log('new summary has been compiled');
         writeNewSummary_1.writeNewSummary(await newSummary);
         console.log('new summary has been written');
@@ -251,21 +253,36 @@ exports.processFiles = void 0;
 const core = __importStar(__webpack_require__(2186));
 const sync_1 = __importDefault(__webpack_require__(8750));
 exports.processFiles = async (summary, files) => {
+    const mode = core.getInput('mode');
     const idColumn = core.getInput('id') || 'id';
     const summaryObject = sync_1.default(summary, {
         columns: true,
     });
     files.map(file => {
-        const data = sync_1.default(file, {
+        console.log(file);
+        const data = sync_1.default(file.data, {
             columns: true,
         });
         data.map((row) => {
             const keys = Object.keys(row).slice(1);
             const id = row[idColumn];
             keys.map(key => {
+                const name = () => {
+                    switch (mode) {
+                        case 'single':
+                            return file.title;
+                        case 'multiple':
+                            return `${file.title}_${key}`;
+                        default:
+                            return 'null';
+                    }
+                };
                 const index = summaryObject.findIndex(item => item[idColumn] === id);
                 if (index > -1) {
-                    summaryObject[index][key] = row[key];
+                    summaryObject[index][name()] = row[key];
+                }
+                else {
+                    core.setFailed('no id found!');
                 }
             });
         });

@@ -26,7 +26,10 @@ const main = async (): Promise<void> => {
     console.log('files have been retrieved');
     const newSummary = processFiles(
       ((await summary).data as unknown) as string,
-      (await files).map(item => (item.data as unknown) as string),
+      (await files).map(item => ({
+        data: Buffer.from(item.data.content, 'base64').toString(),
+        title: item.data.path.replace(/^.*\//g, '').split('.')[0],
+      })),
     );
     console.log('new summary has been compiled');
     writeNewSummary(await newSummary);
