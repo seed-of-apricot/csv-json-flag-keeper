@@ -18,6 +18,10 @@ inputs:
     required: false
     description: 'column name for the id'
     default: 'id'
+  mode:
+    required: false
+    description: 'compilation mode'
+    default: 'single'
 runs:
   using: 'node12'
   main: 'dist/index.js'

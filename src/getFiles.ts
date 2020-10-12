@@ -22,7 +22,6 @@ export const getFiles = async (
           ...prev,
           octokit.repos.getContent({
             ...github.context.repo,
-            headers: { accept: 'application/vnd.github.v3.raw' },
             path: file.filename,
             ref: item.data.sha,
           }),
