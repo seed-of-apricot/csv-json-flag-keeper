@@ -19,6 +19,6 @@ jobs:
       - name: add-and-commit
         uses: EndBug/add-and-commit@v4
         with:
-          message: README.md has been re-written
+          message: summary has been re-written
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
