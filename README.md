@@ -1,4 +1,4 @@
-# csv-flag-keeper
+# csv-json-flag-keeper
 
 Keep flags on your records 📃.
 
@@ -37,6 +37,8 @@ will annex the column to the csv record.
 | 104 |       | 1     |
 | 105 | 1     | 1     |
 | ... |       |       |
+
+This process could be done with any combination of csv and json. (e.g., summary: json, flag-file:csv).
 
 ## Usage
 
@@ -80,8 +82,8 @@ The parameters that this action refers to are:
 | parameter    | required | default  | What is this                                                                                                    |
 | ------------ | -------- | -------- | --------------------------------------------------------------------------------------------------------------- |
 | GITHUB_TOKEN | Yes      |          | GitHub token                                                                                                    |
-| summaryPath  | Yes      |          | Path to the summary file                                                                                        |
-| flagPath     | Yes      |          | Path to the flag files to be retrieved                                                                          |
+| summaryPath  | Yes      |          | Path to the summary <br /> Extension must be either csv or json. file                                           |
+| flagPath     | Yes      |          | Path to the flag files to be <br /> Extension must be either csv or json retrieved                              |
 | id           |          | `id`     | Column name of id                                                                                               |
 | mode         |          | `single` | `single` uses the file name as the column name <br /> `multiple` uses filename + column name as the column name |
 
