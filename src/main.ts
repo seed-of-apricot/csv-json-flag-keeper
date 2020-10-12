@@ -27,7 +27,7 @@ const main = async (): Promise<void> => {
     const newSummary = processFiles(
       ((await summary).data as unknown) as string,
       (await files).map(item => ({
-        data: Buffer.from(item.data.content).toString(),
+        data: Buffer.from(item.data.content, 'base64').toString(),
         title: item.data.path.replace(/^.*\//g, '').split('.')[0],
       })),
     );
