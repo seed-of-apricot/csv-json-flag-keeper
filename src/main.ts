@@ -27,8 +27,7 @@ const main = async (): Promise<void> => {
     const newSummary = processFiles(
       ((await summary).data as unknown) as string,
       (await files).map(item => ({
-        // eslint-disable-next-line no-undef
-        data: atob(item.data.content),
+        data: Buffer.from(item.data.content).toString(),
         title: item.data.path.replace(/^.*\//g, '').split('.')[0],
       })),
     );
