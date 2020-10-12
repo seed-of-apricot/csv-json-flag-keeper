@@ -204,7 +204,8 @@ const main = async () => {
         const files = getFiles_1.getFiles(commits);
         console.log('files have been retrieved');
         const newSummary = processFiles_1.processFiles((await summary).data, (await files).map(item => ({
-            data: item.data.content,
+            // eslint-disable-next-line no-undef
+            data: atob(item.data.content),
             title: item.data.path.replace(/^.*\//g, '').split('.')[0],
         })));
         console.log('new summary has been compiled');
