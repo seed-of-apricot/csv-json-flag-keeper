@@ -12,7 +12,6 @@ export const getSummary = async (): Promise<
   return octokit.repos.getContent({
     ...github.context.repo,
     ref: github.context.ref,
-    headers: { accept: 'application/vnd.github.v3.raw' },
     path,
   });
 };

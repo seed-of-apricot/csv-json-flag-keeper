@@ -1,4 +1,4 @@
-# csv-flag-keeper
+# csv-json-flag-keeper
 
 Keep flags on your records 📃.
 
@@ -38,16 +38,19 @@ will annex the column to the csv record.
 | 105 | 1     | 1     |
 | ... |       |       |
 
+This process could be done with any combination of csv and json. (e.g., summary: json, flag-file:csv).
+
 ## Usage
 
 This is an example used in this repository.
 
 ```yml
 name: 'update-summary'
+
 on:
   push:
     branches:
-      - update-summary
+      - main
 
 jobs:
   test:
@@ -55,10 +58,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-        with:
-          ref: update-summary
       - name: update-summary
-        uses: seed-of-apricot/csv-flag-keeper@0.1.0
+        uses: ./
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           summaryPath: example/example.csv
@@ -66,7 +67,7 @@ jobs:
       - name: add-and-commit
         uses: EndBug/add-and-commit@v4
         with:
-          message: README.md has been re-written
+          message: summary has been re-written
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -80,8 +81,8 @@ The parameters that this action refers to are:
 | parameter    | required | default  | What is this                                                                                                    |
 | ------------ | -------- | -------- | --------------------------------------------------------------------------------------------------------------- |
 | GITHUB_TOKEN | Yes      |          | GitHub token                                                                                                    |
-| summaryPath  | Yes      |          | Path to the summary file                                                                                        |
-| flagPath     | Yes      |          | Path to the flag files to be retrieved                                                                          |
+| summaryPath  | Yes      |          | Path to the summary <br /> Extension must be either csv or json. file                                           |
+| flagPath     | Yes      |          | Path to the flag files to be <br /> Extension must be either csv or json retrieved                              |
 | id           |          | `id`     | Column name of id                                                                                               |
 | mode         |          | `single` | `single` uses the file name as the column name <br /> `multiple` uses filename + column name as the column name |
 
