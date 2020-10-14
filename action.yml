@@ -21,7 +21,7 @@ inputs:
   mode:
     required: false
     description: 'compilation mode'
-    default: 'single'
+    default: 'csv'
 runs:
   using: 'node12'
   main: 'dist/index.js'
