@@ -46,10 +46,11 @@ This is an example used in this repository.
 
 ```yml
 name: 'update-summary'
+
 on:
   push:
     branches:
-      - update-summary
+      - main
 
 jobs:
   test:
@@ -57,10 +58,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-        with:
-          ref: update-summary
       - name: update-summary
-        uses: seed-of-apricot/csv-flag-keeper@0.1.0
+        uses: ./
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           summaryPath: example/example.csv
@@ -68,7 +67,7 @@ jobs:
       - name: add-and-commit
         uses: EndBug/add-and-commit@v4
         with:
-          message: README.md has been re-written
+          message: summary has been re-written
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
