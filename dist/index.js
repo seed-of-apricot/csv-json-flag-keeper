@@ -306,18 +306,17 @@ exports.processFiles = async (summary, files) => {
     }
     const mode = core.getInput('mode');
     const idColumn = core.getInput('id') || 'id';
-    const summaryObject = mode === 'csv'
+    const summaryObject = typeof summary.data === 'string'
         ? sync_1.default(summary.data, {
             columns: true,
         })
         : summary.data;
     files.map(file => {
-        console.log(file);
         if (!file) {
             core.setFailed('flag file is invalid');
             throw new Error('');
         }
-        const data = mode === 'csv'
+        const data = typeof file.data === 'string'
             ? sync_1.default(file.data, {
                 columns: true,
             })
