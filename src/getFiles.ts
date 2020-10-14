@@ -12,19 +12,18 @@ export const getFiles = async (
 ): Promise<OctokitResponse<ReposGetContentResponseData>[]> => {
   const token = core.getInput('GITHUB_TOKEN');
   const path = globToRegex(core.getInput('flagPath'), { globstar: true });
-  console.log(path);
   const octokit = github.getOctokit(token);
+  console.log(commits);
   const files = commits.flatMap(item =>
     item.data.files.reduce((prev, file) => {
-      console.log(file.filename);
-      console.log(file.filename.match(path));
-      if (file.filename.match(path) !== null) {
+      console.log(file);
+      if (file.filename.match(path) !== null && file.status !== 'removed') {
         return [
           ...prev,
           octokit.repos.getContent({
             ...github.context.repo,
-            headers: { accept: 'application/vnd.github.v3.raw' },
             path: file.filename,
+            ref: item.data.sha,
           }),
         ];
       } else {

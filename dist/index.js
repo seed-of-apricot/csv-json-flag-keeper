@@ -2,6 +2,54 @@ require('./sourcemap-register.js');module.exports =
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 9057:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.convertFiles = void 0;
+const core = __importStar(__webpack_require__(2186));
+exports.convertFiles = (file) => {
+    const extension = file.data.path.split('.').pop();
+    switch (extension) {
+        case 'csv':
+            return {
+                data: Buffer.from(file.data.content, 'base64').toString(),
+                title: file.data.path.replace(/^.*\//g, '').split('.')[0],
+            };
+        case 'json':
+            return {
+                data: JSON.parse(Buffer.from(file.data.content, 'base64').toString()),
+                title: file.data.path.replace(/^.*\//g, '').split('.')[0],
+            };
+        default:
+            core.setFailed('extension is not vaild');
+    }
+};
+
+
+/***/ }),
+
 /***/ 64:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -35,8 +83,19 @@ exports.getCommits = async () => {
     const octokit = github.getOctokit(token);
     const { repo, payload } = github.context;
     console.log(payload);
-    const commitIds = payload.commits.map((item) => item.id);
-    return Promise.all(commitIds.map(async (item) => octokit.repos.getCommit({
+    const commitIds = async () => {
+        if (payload.pull_request) {
+            return (await octokit.pulls.listCommits({
+                ...repo,
+                pull_number: payload.number,
+            })).data.map(item => item.sha);
+        }
+        else {
+            return payload.commits.map((item) => item.id);
+        }
+    };
+    console.log(await commitIds());
+    return Promise.all((await commitIds()).map(async (item) => octokit.repos.getCommit({
         ...repo,
         ref: item,
     })));
@@ -80,18 +139,17 @@ const glob_to_regExp_1 = __importDefault(__webpack_require__(7515));
 exports.getFiles = async (commits) => {
     const token = core.getInput('GITHUB_TOKEN');
     const path = glob_to_regExp_1.default(core.getInput('flagPath'), { globstar: true });
-    console.log(path);
     const octokit = github.getOctokit(token);
+    console.log(commits);
     const files = commits.flatMap(item => item.data.files.reduce((prev, file) => {
-        console.log(file.filename);
-        console.log(file.filename.match(path));
-        if (file.filename.match(path) !== null) {
+        console.log(file);
+        if (file.filename.match(path) !== null && file.status !== 'removed') {
             return [
                 ...prev,
                 octokit.repos.getContent({
                     ...github.context.repo,
-                    headers: { accept: 'application/vnd.github.v3.raw' },
                     path: file.filename,
+                    ref: item.data.sha,
                 }),
             ];
         }
@@ -140,7 +198,6 @@ exports.getSummary = async () => {
     return octokit.repos.getContent({
         ...github.context.repo,
         ref: github.context.ref,
-        headers: { accept: 'application/vnd.github.v3.raw' },
         path,
     });
 };
@@ -174,6 +231,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(2186));
+const convertFiles_1 = __webpack_require__(9057);
 const getCommits_1 = __webpack_require__(64);
 const getFiles_1 = __webpack_require__(5948);
 const getSummary_1 = __webpack_require__(9600);
@@ -193,7 +251,9 @@ const main = async () => {
         console.log('summary has been retrieved');
         const files = getFiles_1.getFiles(commits);
         console.log('files have been retrieved');
-        const newSummary = processFiles_1.processFiles((await summary).data, (await files).map(item => item.data));
+        const summaryData = convertFiles_1.convertFiles(await summary);
+        const filesData = (await files).map(item => convertFiles_1.convertFiles(item));
+        const newSummary = processFiles_1.processFiles(summaryData, filesData);
         console.log('new summary has been compiled');
         writeNewSummary_1.writeNewSummary(await newSummary);
         console.log('new summary has been written');
@@ -240,21 +300,48 @@ exports.processFiles = void 0;
 const core = __importStar(__webpack_require__(2186));
 const sync_1 = __importDefault(__webpack_require__(8750));
 exports.processFiles = async (summary, files) => {
+    if (!summary) {
+        core.setFailed('summary file is invalid');
+        throw new Error('');
+    }
+    const mode = core.getInput('mode');
     const idColumn = core.getInput('id') || 'id';
-    const summaryObject = sync_1.default(summary, {
-        columns: true,
-    });
-    files.map(file => {
-        const data = sync_1.default(file, {
+    const summaryObject = mode === 'csv'
+        ? sync_1.default(summary.data, {
             columns: true,
-        });
+        })
+        : summary.data;
+    files.map(file => {
+        console.log(file);
+        if (!file) {
+            core.setFailed('flag file is invalid');
+            throw new Error('');
+        }
+        const data = mode === 'csv'
+            ? sync_1.default(file.data, {
+                columns: true,
+            })
+            : file.data;
         data.map((row) => {
             const keys = Object.keys(row).slice(1);
             const id = row[idColumn];
             keys.map(key => {
+                const name = () => {
+                    switch (mode) {
+                        case 'single':
+                            return file.title;
+                        case 'multiple':
+                            return `${file.title}_${key}`;
+                        default:
+                            return 'null';
+                    }
+                };
                 const index = summaryObject.findIndex(item => item[idColumn] === id);
                 if (index > -1) {
-                    summaryObject[index][key] = row[key];
+                    summaryObject[index][name()] = row[key];
+                }
+                else {
+                    core.setFailed('no id found!');
                 }
             });
         });

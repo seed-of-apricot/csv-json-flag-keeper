@@ -2,24 +2,53 @@ import * as core from '@actions/core';
 import parse from 'csv-parse/lib/sync';
 
 export const processFiles = async (
-  summary: string,
-  files: string[],
+  summary: { data: string | Object; title: string } | undefined,
+  files: ({ data: string | Object; title: string } | undefined)[],
 ): Promise<{ [key in string]: string }[]> => {
+  if (!summary) {
+    core.setFailed('summary file is invalid');
+    throw new Error('');
+  }
+
+  const mode = core.getInput('mode');
   const idColumn = core.getInput('id') || 'id';
-  const summaryObject: { [key in string]: string }[] = parse(summary, {
-    columns: true,
-  });
+  const summaryObject: { [key in string]: string }[] =
+    mode === 'csv'
+      ? parse(summary.data as string, {
+          columns: true,
+        })
+      : summary.data;
   files.map(file => {
-    const data = parse(file, {
-      columns: true,
-    });
+    console.log(file);
+    if (!file) {
+      core.setFailed('flag file is invalid');
+      throw new Error('');
+    }
+    const data =
+      mode === 'csv'
+        ? parse(file.data as string, {
+            columns: true,
+          })
+        : file.data;
     data.map((row: { [key in string]: string }) => {
       const keys = Object.keys(row).slice(1);
       const id = row[idColumn];
       keys.map(key => {
+        const name = () => {
+          switch (mode) {
+            case 'single':
+              return file.title;
+            case 'multiple':
+              return `${file.title}_${key}`;
+            default:
+              return 'null';
+          }
+        };
         const index = summaryObject.findIndex(item => item[idColumn] === id);
         if (index > -1) {
-          summaryObject[index][key] = row[key];
+          summaryObject[index][name()] = row[key];
+        } else {
+          core.setFailed('no id found!');
         }
       });
     });

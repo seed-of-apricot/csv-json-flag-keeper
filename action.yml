@@ -1,6 +1,9 @@
 name: 'csv-flag-keeper'
 description: 'Keep your summary sheet'
 author: 'seed-of-apricot <seed.of.apricot@dev.chronolapselibrary.net>'
+branding:
+  icon: align-left
+  color: orange
 inputs:
   GITHUB_TOKEN:
     required: true
@@ -15,6 +18,10 @@ inputs:
     required: false
     description: 'column name for the id'
     default: 'id'
+  mode:
+    required: false
+    description: 'compilation mode'
+    default: 'single'
 runs:
   using: 'node12'
   main: 'dist/index.js'

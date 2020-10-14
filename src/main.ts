@@ -1,4 +1,5 @@
 import * as core from '@actions/core';
+import { convertFiles } from './convertFiles';
 import { getCommits } from './getCommits';
 import { getFiles } from './getFiles';
 import { getSummary } from './getSummary';
@@ -24,10 +25,9 @@ const main = async (): Promise<void> => {
     console.log('summary has been retrieved');
     const files = getFiles(commits);
     console.log('files have been retrieved');
-    const newSummary = processFiles(
-      ((await summary).data as unknown) as string,
-      (await files).map(item => (item.data as unknown) as string),
-    );
+    const summaryData = convertFiles(await summary);
+    const filesData = (await files).map(item => convertFiles(item));
+    const newSummary = processFiles(summaryData, filesData);
     console.log('new summary has been compiled');
     writeNewSummary(await newSummary);
     console.log('new summary has been written');
