@@ -13,20 +13,19 @@ export const processFiles = async (
   const mode = core.getInput('mode');
   const idColumn = core.getInput('id') || 'id';
   const summaryObject: { [key in string]: string }[] =
-    mode === 'csv'
-      ? parse(summary.data as string, {
+    typeof summary.data === 'string'
+      ? parse(summary.data, {
           columns: true,
         })
       : summary.data;
   files.map(file => {
-    console.log(file);
     if (!file) {
       core.setFailed('flag file is invalid');
       throw new Error('');
     }
     const data =
-      mode === 'csv'
-        ? parse(file.data as string, {
+      typeof file.data === 'string'
+        ? parse(file.data, {
             columns: true,
           })
         : file.data;
