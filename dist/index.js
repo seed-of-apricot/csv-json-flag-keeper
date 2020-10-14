@@ -82,7 +82,6 @@ exports.getCommits = async () => {
     const token = core.getInput('GITHUB_TOKEN');
     const octokit = github.getOctokit(token);
     const { repo, payload } = github.context;
-    console.log(payload);
     const commitIds = async () => {
         if (payload.pull_request) {
             return (await octokit.pulls.listCommits({
@@ -94,7 +93,6 @@ exports.getCommits = async () => {
             return payload.commits.map((item) => item.id);
         }
     };
-    console.log(await commitIds());
     return Promise.all((await commitIds()).map(async (item) => octokit.repos.getCommit({
         ...repo,
         ref: item,
@@ -140,9 +138,7 @@ exports.getFiles = async (commits) => {
     const token = core.getInput('GITHUB_TOKEN');
     const path = glob_to_regExp_1.default(core.getInput('flagPath'), { globstar: true });
     const octokit = github.getOctokit(token);
-    console.log(commits);
     const files = commits.flatMap(item => item.data.files.reduce((prev, file) => {
-        console.log(file);
         if (file.filename.match(path) !== null && file.status !== 'removed') {
             return [
                 ...prev,
@@ -246,7 +242,6 @@ const main = async () => {
             console.log('no commits');
             return;
         }
-        console.log(commits);
         const summary = getSummary_1.getSummary();
         console.log('summary has been retrieved');
         const files = getFiles_1.getFiles(commits);
@@ -321,9 +316,8 @@ exports.processFiles = async (summary, files) => {
                 columns: true,
             })
             : file.data;
-        console.log(data);
         data.map((row) => {
-            const keys = Object.keys(row).slice(1);
+            const keys = Object.keys(row).filter(key => key !== idColumn);
             const id = row[idColumn];
             keys.map(key => {
                 const name = () => {
@@ -385,13 +379,10 @@ const core = __importStar(__webpack_require__(2186));
 const sync_1 = __importDefault(__webpack_require__(3190));
 const fs_1 = __webpack_require__(5747);
 exports.writeNewSummary = async (summary) => {
-    console.log(summary);
     const columns = summary
         .flatMap(item => Object.keys(item))
         .filter((item, index, array) => array.indexOf(item) === index);
     const str = sync_1.default(summary, { header: true, columns });
-    console.log(str);
-    console.log(columns);
     const path = core.getInput('summaryPath') || './summary.csv';
     fs_1.writeFile(path, str, () => { });
     return 1;
