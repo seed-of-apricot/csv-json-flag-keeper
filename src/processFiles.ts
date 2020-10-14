@@ -29,6 +29,7 @@ export const processFiles = async (
             columns: true,
           })
         : file.data;
+    console.log(data);
     data.map((row: { [key in string]: string }) => {
       const keys = Object.keys(row).slice(1);
       const id = row[idColumn];
