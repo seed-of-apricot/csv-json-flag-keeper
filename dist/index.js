@@ -247,6 +247,10 @@ const main = async () => {
         const summary = getSummary_1.getSummary();
         console.log('summary has been retrieved');
         const files = getFiles_1.getFiles(commits);
+        if ((await files).length === 0) {
+            console.log('no files to compile');
+            return;
+        }
         console.log('files have been retrieved');
         const summaryData = convertFiles_1.convertFiles(await summary);
         const filesData = (await files).map(item => convertFiles_1.convertFiles(item));

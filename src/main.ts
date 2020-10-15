@@ -22,6 +22,12 @@ const main = async (): Promise<void> => {
     const summary = getSummary();
     console.log('summary has been retrieved');
     const files = getFiles(commits);
+
+    if ((await files).length === 0) {
+      console.log('no files to compile');
+      return;
+    }
+
     console.log('files have been retrieved');
     const summaryData = convertFiles(await summary);
     const filesData = (await files).map(item => convertFiles(item));
