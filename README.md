@@ -64,6 +64,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           summaryPath: example/example.csv
           flagPath: example/flags/*.csv
+          id: ID
       - name: add-and-commit
         uses: EndBug/add-and-commit@v4
         with:
