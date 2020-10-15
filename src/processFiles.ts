@@ -10,7 +10,7 @@ export const processFiles = async (
     throw new Error('');
   }
 
-  const mode = core.getInput('mode');
+  const mode = core.getInput('mode') || 'single';
   const idColumn = core.getInput('id') || 'id';
   const summaryObject: { [key in string]: string }[] =
     typeof summary.data === 'string'
@@ -31,7 +31,8 @@ export const processFiles = async (
         : file.data;
 
     data.map((row: { [key in string]: string }) => {
-      const keys = Object.keys(row).filter(key => key !== idColumn);
+      const keys = Object.keys(row).filter(item => item !== idColumn);
+      console.log(keys);
       const id = row[idColumn];
       keys.map(key => {
         const name = () => {

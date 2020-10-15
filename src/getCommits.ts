@@ -12,6 +12,7 @@ export const getCommits = async (): Promise<
 
   const commitIds = async (): Promise<string[]> => {
     if (payload.pull_request) {
+      console.log('retrieving pull request');
       return (
         await octokit.pulls.listCommits({
           ...repo,
@@ -19,6 +20,7 @@ export const getCommits = async (): Promise<
         })
       ).data.map(item => item.sha);
     } else {
+      console.log('retrieving commits');
       return payload.commits.map((item: { id: string }) => item.id);
     }
   };

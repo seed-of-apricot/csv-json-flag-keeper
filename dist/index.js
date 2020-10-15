@@ -84,12 +84,14 @@ exports.getCommits = async () => {
     const { repo, payload } = github.context;
     const commitIds = async () => {
         if (payload.pull_request) {
+            console.log('retrieving pull request');
             return (await octokit.pulls.listCommits({
                 ...repo,
                 pull_number: payload.number,
             })).data.map(item => item.sha);
         }
         else {
+            console.log('retrieving commits');
             return payload.commits.map((item) => item.id);
         }
     };
@@ -299,7 +301,7 @@ exports.processFiles = async (summary, files) => {
         core.setFailed('summary file is invalid');
         throw new Error('');
     }
-    const mode = core.getInput('mode');
+    const mode = core.getInput('mode') || 'single';
     const idColumn = core.getInput('id') || 'id';
     const summaryObject = typeof summary.data === 'string'
         ? sync_1.default(summary.data, {
@@ -317,7 +319,8 @@ exports.processFiles = async (summary, files) => {
             })
             : file.data;
         data.map((row) => {
-            const keys = Object.keys(row).filter(key => key !== idColumn);
+            const keys = Object.keys(row).filter(item => item !== idColumn);
+            console.log(keys);
             const id = row[idColumn];
             keys.map(key => {
                 const name = () => {

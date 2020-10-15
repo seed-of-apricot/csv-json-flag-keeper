@@ -8,6 +8,6 @@ test('convert to object', async () => {
   const data = fs.toString();
   const data2 = fs2.toString();
   const array = processFiles({ data, title: "summary" }, [{ data: data2, title: "flag" }]);
-  console.log((await array)[0])
+  console.log((await array))
   expect(await array);
 });
