@@ -32,7 +32,6 @@ export const processFiles = async (
 
     data.map((row: { [key in string]: string }) => {
       const keys = Object.keys(row).filter(item => item !== idColumn);
-      console.log(keys);
       const id = row[idColumn];
       keys.map(key => {
         const name = () => {

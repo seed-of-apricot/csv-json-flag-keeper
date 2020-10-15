@@ -320,7 +320,6 @@ exports.processFiles = async (summary, files) => {
             : file.data;
         data.map((row) => {
             const keys = Object.keys(row).filter(item => item !== idColumn);
-            console.log(keys);
             const id = row[idColumn];
             keys.map(key => {
                 const name = () => {
