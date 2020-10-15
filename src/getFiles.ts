@@ -14,21 +14,25 @@ export const getFiles = async (
   const path = globToRegex(core.getInput('flagPath'), { globstar: true });
   const octokit = github.getOctokit(token);
 
-  const files = commits.flatMap(item =>
-    item.data.files.reduce((prev, file) => {
-      if (file.filename.match(path) !== null && file.status !== 'removed') {
-        return [
-          ...prev,
-          octokit.repos.getContent({
-            ...github.context.repo,
-            path: file.filename,
-            ref: item.data.sha,
-          }),
-        ];
-      } else {
-        return prev;
-      }
-    }, [] as Promise<OctokitResponse<ReposGetContentResponseData>>[]),
-  );
+  const files = commits
+    .sort((a, b) =>
+      a.data.commit.author.date > b.data.commit.author.date ? -1 : 1,
+    )
+    .flatMap(item =>
+      item.data.files.reduce((prev, file) => {
+        if (file.filename.match(path) !== null && file.status !== 'removed') {
+          return [
+            ...prev,
+            octokit.repos.getContent({
+              ...github.context.repo,
+              path: file.filename,
+              ref: item.data.sha,
+            }),
+          ];
+        } else {
+          return prev;
+        }
+      }, [] as Promise<OctokitResponse<ReposGetContentResponseData>>[]),
+    );
   return Promise.all(files);
 };

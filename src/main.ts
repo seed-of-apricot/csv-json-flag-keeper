@@ -30,7 +30,13 @@ const main = async (): Promise<void> => {
 
     console.log('files have been retrieved');
     const summaryData = convertFiles(await summary);
-    const filesData = (await files).map(item => convertFiles(item));
+    const filesData = (await files)
+      .filter(
+        (item, index, array) =>
+          array.map(element => element.data.path).indexOf(item.data.path) ===
+          index,
+      )
+      .map(item => convertFiles(item));
     const newSummary = processFiles(summaryData, filesData);
     console.log('new summary has been compiled');
     writeNewSummary(await newSummary);

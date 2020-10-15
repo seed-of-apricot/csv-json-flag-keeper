@@ -140,7 +140,9 @@ exports.getFiles = async (commits) => {
     const token = core.getInput('GITHUB_TOKEN');
     const path = glob_to_regExp_1.default(core.getInput('flagPath'), { globstar: true });
     const octokit = github.getOctokit(token);
-    const files = commits.flatMap(item => item.data.files.reduce((prev, file) => {
+    const files = commits
+        .sort((a, b) => a.data.commit.author.date > b.data.commit.author.date ? -1 : 1)
+        .flatMap(item => item.data.files.reduce((prev, file) => {
         if (file.filename.match(path) !== null && file.status !== 'removed') {
             return [
                 ...prev,
@@ -253,7 +255,10 @@ const main = async () => {
         }
         console.log('files have been retrieved');
         const summaryData = convertFiles_1.convertFiles(await summary);
-        const filesData = (await files).map(item => convertFiles_1.convertFiles(item));
+        const filesData = (await files)
+            .filter((item, index, array) => array.map(element => element.data.path).indexOf(item.data.path) ===
+            index)
+            .map(item => convertFiles_1.convertFiles(item));
         const newSummary = processFiles_1.processFiles(summaryData, filesData);
         console.log('new summary has been compiled');
         writeNewSummary_1.writeNewSummary(await newSummary);
