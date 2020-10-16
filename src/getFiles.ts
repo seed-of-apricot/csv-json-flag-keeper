@@ -6,10 +6,12 @@ import {
   ReposGetContentResponseData,
 } from '@octokit/types';
 import globToRegex from 'glob-to-regExp';
+import axios, { AxiosResponse } from 'axios';
+import { convertFiles } from './convertFiles';
 
 export const getFiles = async (
   commits: OctokitResponse<ReposGetCommitResponseData>[],
-): Promise<OctokitResponse<ReposGetContentResponseData>[]> => {
+): Promise<{ data: string | Object; title: string }[]> => {
   const token = core.getInput('GITHUB_TOKEN');
   const path = globToRegex(core.getInput('flagPath'), { globstar: true });
   const octokit = github.getOctokit(token);
@@ -34,5 +36,16 @@ export const getFiles = async (
         }
       }, [] as Promise<OctokitResponse<ReposGetContentResponseData>>[]),
     );
-  return Promise.all(files);
+
+  const fileContents = (await Promise.all(files))
+    .filter(
+      (item, index, array) =>
+        array.map(element => element.data.path).indexOf(item.data.path) ===
+        index,
+    )
+    .map(async item =>
+      convertFiles(item.data.path)(await axios.get(item.data.download_url)),
+    );
+
+  return Promise.all(fileContents);
 };

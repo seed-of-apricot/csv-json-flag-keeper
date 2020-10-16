@@ -2,8 +2,8 @@ import * as core from '@actions/core';
 import parse from 'csv-parse/lib/sync';
 
 export const processFiles = async (
-  summary: { data: string | Object; title: string } | undefined,
-  files: ({ data: string | Object; title: string } | undefined)[],
+  summary: { data: string | Object; title: string },
+  files: { data: string | Object; title: string }[],
 ): Promise<{ [key in string]: string }[]> => {
   if (!summary) {
     core.setFailed('summary file is invalid');

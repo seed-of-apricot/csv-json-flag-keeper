@@ -1,22 +1,23 @@
 import * as core from '@actions/core';
 import { OctokitResponse, ReposGetContentResponseData } from '@octokit/types';
+import { AxiosResponse } from 'axios';
 
-export const convertFiles = (
-  file: OctokitResponse<ReposGetContentResponseData>,
+export const convertFiles = (path: string) => (
+  file: AxiosResponse<unknown>,
 ) => {
-  const extension = file.data.path.split('.').pop();
-  switch (extension) {
+  switch (path.split('.').pop()) {
     case 'csv':
       return {
-        data: Buffer.from(file.data.content, 'base64').toString(),
-        title: file.data.path.replace(/^.*\//g, '').split('.')[0],
+        data: file.data as string,
+        title: path.replace(/^.*\//g, '').split('.')[0],
       };
     case 'json':
       return {
-        data: JSON.parse(Buffer.from(file.data.content, 'base64').toString()),
-        title: file.data.path.replace(/^.*\//g, '').split('.')[0],
+        data: JSON.parse(file.data as string),
+        title: path.replace(/^.*\//g, '').split('.')[0],
       };
     default:
       core.setFailed('extension is not vaild');
+      throw new Error('');
   }
 };
