@@ -1,1 +1,2 @@
 dist/** -diff linguist-generated=true 
+example/flags/example_lfs.csv filter=lfs diff=lfs merge=lfs -text

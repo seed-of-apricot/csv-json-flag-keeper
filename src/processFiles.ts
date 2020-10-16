@@ -48,7 +48,7 @@ export const processFiles = async (
         if (index > -1) {
           summaryObject[index][name()] = row[key];
         } else {
-          core.setFailed('no id found!');
+          core.warning('no id found!');
         }
       });
     });

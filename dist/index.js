@@ -356,7 +356,7 @@ exports.processFiles = async (summary, files) => {
                     summaryObject[index][name()] = row[key];
                 }
                 else {
-                    core.setFailed('no id found!');
+                    core.warning('no id found!');
                 }
             });
         });
