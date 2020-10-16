@@ -151,7 +151,7 @@ exports.getFiles = async (commits) => {
                 octokit.repos.getContent({
                     ...github.context.repo,
                     path: file.filename,
-                    ref: item.data.sha,
+                    ref: github.context.ref.replace('refs/heads/', ''),
                 }),
             ];
         }
@@ -208,10 +208,10 @@ exports.getSummary = async () => {
     const path = core.getInput('summaryPath');
     const file = await octokit.repos.getContent({
         ...github.context.repo,
-        ref: github.context.ref,
+        ref: github.context.ref.replace('refs/heads/', ''),
         path,
     });
-    const contents = convertFiles_1.convertFiles(file.data.path)(await axios_1.default.get(file.data.download_url.replace('refs/heads/', '')));
+    const contents = convertFiles_1.convertFiles(file.data.path)(await axios_1.default.get(file.data.download_url));
     if (!contents) {
         core.setFailed('invalid summary contents!');
     }

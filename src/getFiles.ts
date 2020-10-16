@@ -28,7 +28,7 @@ export const getFiles = async (
             octokit.repos.getContent({
               ...github.context.repo,
               path: file.filename,
-              ref: item.data.sha,
+              ref: github.context.ref.replace('refs/heads/', ''),
             }),
           ];
         } else {

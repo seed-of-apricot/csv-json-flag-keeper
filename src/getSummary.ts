@@ -14,12 +14,12 @@ export const getSummary = async (): Promise<{
   const path = core.getInput('summaryPath');
   const file = await octokit.repos.getContent({
     ...github.context.repo,
-    ref: github.context.ref,
+    ref: github.context.ref.replace('refs/heads/', ''),
     path,
   });
 
   const contents = convertFiles(file.data.path)(
-    await axios.get(file.data.download_url.replace('refs/heads/', '')),
+    await axios.get(file.data.download_url),
   );
 
   if (!contents) {
