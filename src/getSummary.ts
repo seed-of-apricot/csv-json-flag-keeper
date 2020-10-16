@@ -19,7 +19,7 @@ export const getSummary = async (): Promise<{
   });
 
   const contents = convertFiles(file.data.path)(
-    await axios.get(file.data.download_url),
+    await axios.get(file.data.download_url.replace('refs/heads/', '')),
   );
 
   if (!contents) {

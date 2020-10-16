@@ -162,7 +162,7 @@ exports.getFiles = async (commits) => {
     const fileContents = (await Promise.all(files))
         .filter((item, index, array) => array.map(element => element.data.path).indexOf(item.data.path) ===
         index)
-        .map(async (item) => convertFiles_1.convertFiles(item.data.path)(await axios_1.default.get(item.data.download_url)));
+        .map(async (item) => convertFiles_1.convertFiles(item.data.path)(await axios_1.default.get(item.data.download_url.replace('refs/heads/', ''))));
     return Promise.all(fileContents);
 };
 
@@ -211,7 +211,7 @@ exports.getSummary = async () => {
         ref: github.context.ref,
         path,
     });
-    const contents = convertFiles_1.convertFiles(file.data.path)(await axios_1.default.get(file.data.download_url));
+    const contents = convertFiles_1.convertFiles(file.data.path)(await axios_1.default.get(file.data.download_url.replace('refs/heads/', '')));
     if (!contents) {
         core.setFailed('invalid summary contents!');
     }

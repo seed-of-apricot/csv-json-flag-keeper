@@ -44,7 +44,9 @@ export const getFiles = async (
         index,
     )
     .map(async item =>
-      convertFiles(item.data.path)(await axios.get(item.data.download_url)),
+      convertFiles(item.data.path)(
+        await axios.get(item.data.download_url.replace('refs/heads/', '')),
+      ),
     );
 
   return Promise.all(fileContents);
