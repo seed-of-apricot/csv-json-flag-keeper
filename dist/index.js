@@ -208,7 +208,7 @@ exports.getSummary = async () => {
     const path = core.getInput('summaryPath');
     const file = await octokit.repos.getContent({
         ...github.context.repo,
-        ref: github.context.ref.replace('refs/heads/', ''),
+        ref: github.context.sha,
         path,
     });
     const contents = convertFiles_1.convertFiles(file.data.path)(await axios_1.default.get(file.data.download_url));
