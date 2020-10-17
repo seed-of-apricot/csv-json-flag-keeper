@@ -151,7 +151,7 @@ exports.getFiles = async (commits) => {
                 octokit.repos.getContent({
                     ...github.context.repo,
                     path: file.filename,
-                    ref: github.context.ref.replace('refs/heads/', ''),
+                    ref: github.context.sha,
                 }),
             ];
         }
